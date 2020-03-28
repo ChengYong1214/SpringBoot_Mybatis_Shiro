@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+</head>
+<body>
+<h1>用户信息</h1>
+<hr>
+<h3 th:text="'账号：'+${user.username}"></h3>
+<h3 th:text="'密码：'+${user.password}"></h3>
+<h3 th:each="role :${user.roles}"><span th:text="${role.roleName}+':'"></span><span  th:each="prem :${role.permissions}"><span th:text="${prem.permissionsName}"></span></span></h3>
+</body>
+</html>

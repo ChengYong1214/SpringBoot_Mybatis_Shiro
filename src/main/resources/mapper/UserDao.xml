@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yong.demo.dao.UserDao">
+
+    <resultMap id="UserMap" type="com.yong.demo.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="roles" ofType="com.yong.demo.pojo.Role">
+            <id property="id" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+            <collection property="permissions" ofType="com.yong.demo.pojo.Permissions">
+                <id property="id" column="permId"/>
+                <result property="permissionsName" column="permName"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="findByName" parameterType="java.lang.String" resultType="com.yong.demo.pojo.User">
+      select id, username, password from user where username = #{username}
+    </select>
+
+    <select id="findById" parameterType="java.lang.Integer" resultMap="UserMap">
+        SELECT user.id as id,user.username as username,user.password as password,role.roleName as roleName,permissions.permissionsName as permName
+        FROM USER,role,user_role,permissions,role_perm
+        WHERE user_role.user_id=user.id
+        AND user_role.role_id=role.id
+        AND role_perm.role_id=role.id
+        AND role_perm.perm_id=permissions.id
+        AND user.id=#{id}
+    </select>
+</mapper>
